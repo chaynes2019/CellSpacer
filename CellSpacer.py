@@ -10,12 +10,12 @@ yLength = 101
 
 defaultOmega = 5
 
-iterations = 50
+iterations = 150
 
 gridHistory = np.zeros((xLength, yLength, iterations))
 
 grid = Grid(xLength, yLength, [
-    [(50, 50), 0, 18, 1]
+    [(50, 50), -1, 0, 200, 1]
 ])
 
 for t in range(iterations):
@@ -32,5 +32,5 @@ def animate(t):
     displayMatrix = ax.matshow(gridHistory[:, :, t])
     return displayMatrix
 
-anim = animation.FuncAnimation(fig, func = animate, frames = iterations, interval = 125)
+anim = animation.FuncAnimation(fig, func = animate, frames = iterations, interval = 30)
 plt.show()
