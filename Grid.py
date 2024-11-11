@@ -37,12 +37,18 @@ class Grid():
 
             colorVal = spaceInfo[4]
 
+            phiMVal = spaceInfo[5]
+
+            quiescenceVal = spaceInfo[6]
+
             fillingSpace = self.spaces[(x, y)]
             fillingSpace.setOccupant(Cell(fillingSpace,
                                           num_divisions,
                                           etaVal,
                                           omegaVal,
-                                          colorVal))
+                                          colorVal,
+                                          phiMVal,
+                                          quiescenceVal))
 
     def getVonNeumannNeighbors(self, x, y):
         xLength = self.dimensions[0]
