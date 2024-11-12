@@ -31,17 +31,20 @@ class Grid():
             x = spaceInfo[0][0]
             y = spaceInfo[0][1]
 
-            num_divisions = spaceInfo[1]
-            muVal = spaceInfo[2]
+            muVal = spaceInfo[1]
+            num_divisions = spaceInfo[2]
             omegaVal = spaceInfo[3]
 
-            colorVal = spaceInfo[4]
+            telomeraseVal = spaceInfo[4]
+
+            colorVal = spaceInfo[5]
 
             fillingSpace = self.spaces[(x, y)]
             fillingSpace.setOccupant(Cell(fillingSpace,
-                                          num_divisions,
                                           muVal,
+                                          num_divisions,
                                           omegaVal,
+                                          telomeraseVal,
                                           colorVal))
 
     def getVonNeumannNeighbors(self, x, y):
@@ -121,4 +124,13 @@ class Grid():
         print(len(self.cells))
 
         for cell in self.cells:
-            cell.tick()
+            if cell.mu == -1:
+                cell.tick(False)
+            else:
+                cell.tick(False)
+
+    def treatWithTelomeraseInhibitor(self):
+        self.refreshCellPopulation()
+
+        for cell in self.cells:
+            cell.telomeraseVal = 0
