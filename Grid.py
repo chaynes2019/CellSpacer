@@ -32,7 +32,7 @@ class Grid():
             y = spaceInfo[0][1]
 
             num_divisions = spaceInfo[1]
-            etaVal = spaceInfo[2]
+            muVal = spaceInfo[2]
             omegaVal = spaceInfo[3]
 
             colorVal = spaceInfo[4]
@@ -40,7 +40,7 @@ class Grid():
             fillingSpace = self.spaces[(x, y)]
             fillingSpace.setOccupant(Cell(fillingSpace,
                                           num_divisions,
-                                          etaVal,
+                                          muVal,
                                           omegaVal,
                                           colorVal))
 
