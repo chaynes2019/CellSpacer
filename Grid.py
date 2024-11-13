@@ -15,10 +15,15 @@ class Grid():
 
         self.initializeOccupiedSpaces(initiallyOccupiedSpaces)
 
-        self.cells = []
+        self.cells = set()
 
         self.refreshCellPopulation()
 
+    def phi(self, t):
+        if (t // 100) % 2 == 0:
+            return 1
+        else:
+            return 0
 
     def initializeEmptyGrid(self):
         for x, y in iterT.product(range(self.dimensions[0]),
@@ -31,21 +36,14 @@ class Grid():
             x = spaceInfo[0][0]
             y = spaceInfo[0][1]
 
-            num_divisions = spaceInfo[1]
-            etaVal = spaceInfo[2]
-            omegaVal = spaceInfo[3]
+            colorVal = spaceInfo[1]
 
-            colorVal = spaceInfo[4]
+            phiMVal = spaceInfo[2]
 
-            phiMVal = spaceInfo[5]
-
-            quiescenceVal = spaceInfo[6]
+            quiescenceVal = spaceInfo[3]
 
             fillingSpace = self.spaces[(x, y)]
             fillingSpace.setOccupant(Cell(fillingSpace,
-                                          num_divisions,
-                                          etaVal,
-                                          omegaVal,
                                           colorVal,
                                           phiMVal,
                                           quiescenceVal))
@@ -111,7 +109,7 @@ class Grid():
         return neighbors
     
     def refreshCellPopulation(self):
-        self.cells = []
+        self.cells = set()
 
         xLength = self.dimensions[0]
         yLength = self.dimensions[1]
@@ -119,12 +117,14 @@ class Grid():
         for x, y in iterT.product(range(xLength), range(yLength)):
             cell = self.spaces[(x, y)].getOccupant()
             if cell != None:
-                self.cells.append(cell)
+                self.cells.add(cell)
 
-    def tick(self):
+    def tick(self, t):
         self.refreshCellPopulation()
 
         print(len(self.cells))
 
+        phiVal = self.phi(t)
+
         for cell in self.cells:
-            cell.tick()
+            cell.tick(phiVal)

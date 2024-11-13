@@ -1,4 +1,4 @@
-probDoNothing = 0.5
+probDoNothing = 0.0
 
 def p_r(deltaPhi):
     return (1 - probDoNothing) * (1 - deltaPhi)

@@ -25,13 +25,14 @@ def visualizeMatrix(colorMatrix):
 
 
 grid = Grid(7, 7, [
-    [(3, 3), 0, 0, 5, 1]
+    [(3, 3), 1, 1, False]
 ])
 
+'''
 color_matrix = computeMatrixFromGrid(grid)
 visualizeMatrix(color_matrix)
 
-grid.tick()
+grid.tick(0)
 
 color_matrix = computeMatrixFromGrid(grid)
 visualizeMatrix(color_matrix)
@@ -41,3 +42,9 @@ print(grid.spaces[(3, 3)].getOccupant())
 
 color_matrix = computeMatrixFromGrid(grid)
 visualizeMatrix(color_matrix)
+
+grid.tick(1)
+
+color_matrix = computeMatrixFromGrid(grid)
+visualizeMatrix(color_matrix)
+'''

@@ -7,6 +7,9 @@ class Cell():
         self.color = colorValue
         self.phiM = phi_m
         self.quiescent = quiescent_
+
+        if abs(self.color) > 1 or abs(self.phiM) > 1:
+            raise(ValueError(f"The passed cell parameters are too large: color = {self.color}; phiM = {self.phiM}"))
     
     def getColor(self):
         return self.color
@@ -21,6 +24,8 @@ class Cell():
             action(neighboringSpaces)
         else:
             action()
+
+        #print(f"Action chosen is {action}")
             
 
     def proliferate(self, neighboringPlots):
