@@ -1,6 +1,7 @@
 import itertools as iterT
 from Space import Space
 from Cell import Cell
+import math
 
 class Grid():
     def __init__(self, xLength, yLength, initiallyOccupiedSpaces):
@@ -20,10 +21,9 @@ class Grid():
         self.refreshCellPopulation()
 
     def phi(self, t):
-        if (t // 100) % 2 == 0:
-            return 1
-        else:
-            return 0
+        T = 100
+
+        return 0.5 * math.cos( (2 * math.pi * t) / T ) + 0.5
 
     def initializeEmptyGrid(self):
         for x, y in iterT.product(range(self.dimensions[0]),
