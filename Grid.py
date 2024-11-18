@@ -23,11 +23,11 @@ class Grid():
     def phi(self, t):
         T = 100
 
-        #return 2 * math.pi * t / T
-        if t >= 250:
+        return 2 * math.pi * t / T
+        '''if t >= 250:
             return 0.5 * 2 * math.pi
         else:
-            return 0
+            return 0'''
 
     def initializeEmptyGrid(self):
         for x, y in iterT.product(range(self.dimensions[0]),
@@ -46,11 +46,14 @@ class Grid():
 
             quiescenceVal = spaceInfo[3]
 
+            sVal = spaceInfo[4]
+
             fillingSpace = self.spaces[(x, y)]
             fillingSpace.setOccupant(Cell(fillingSpace,
                                           colorVal,
                                           tMFracVal,
-                                          quiescenceVal))
+                                          quiescenceVal,
+                                          sVal))
 
     def getVonNeumannNeighbors(self, x, y):
         xLength = self.dimensions[0]

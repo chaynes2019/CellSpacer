@@ -3,11 +3,12 @@ import math
 from ComplementaryProbabilityFunctions import p_a, p_n, p_q, p_r, probDoNothing
 
 class Cell():
-    def __init__(self, container, colorValue, t_mVal, quiescent_):
+    def __init__(self, container, colorValue, t_mVal, quiescent_, sVal):
         self.containingSpace = container
         self.color = colorValue
         self.t_mFrac = t_mVal
         self.quiescent = quiescent_
+        self.s = sVal
 
         if abs(self.color) > 1 or abs(self.t_mFrac) > 1:
             raise(ValueError(f"The passed cell parameters are too large: color = {self.color}; t_mFrac = {self.t_mFrac}"))
@@ -59,7 +60,7 @@ class Cell():
                  self.apoptote,
                  self.doNothing],
                  [p_r(fitness),
-                  p_q(fitness),
+                  p_q(fitness, self.s),
                   p_a(fitness),
                   probDoNothing]
             )

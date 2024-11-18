@@ -16,9 +16,9 @@ iterations = 500
 
 gridHistory = np.zeros((xLength, yLength, iterations))
 
-initialYellowCells = [[(x + 45, 25), 1, yellowt_m, False] for x in range(10)]
+initialYellowCells = [[(x + 45, 25), 1, yellowt_m, False, 0.5] for x in range(10)]
 
-initialGreenCells = [[(x + 45, 75), 0.5, greent_m, False] for x in range(10)]
+initialGreenCells = [[(x + 45, 75), 0.5, greent_m, False, 0.5] for x in range(10)]
 
 grid = Grid(xLength, yLength, initialYellowCells + initialGreenCells)
 
@@ -44,6 +44,6 @@ def animate(t):
 anim = animation.FuncAnimation(fig, func = animate, frames = iterations, interval = 30)
 
 gifWriter = animation.PillowWriter(fps = 30)
-anim.save("OutputGIFs/PeriodicEnvironmentalFluctuationsDotProductv1/Mid-waySwitchTwoProliferatingPopulations.gif", writer = gifWriter)
+anim.save("OutputGIFs/PeriodicEnvironmentalFluctuationsDotProductv1/newABMProbabilities.gif", writer = gifWriter)
 
 exit()
