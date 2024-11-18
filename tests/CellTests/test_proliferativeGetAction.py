@@ -1,10 +1,23 @@
 from Grid import Grid
+import math
 
 def test_proliferateRetrieval():
-    phi = 1
+    phi = 0
 
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 1, False]
+        [(0, 0), 1, 0, False]
+    ])
+
+    cell = unitaryGrid.spaces[(0, 0)].getOccupant()
+
+    assert cell.getAction(phi)[0] in [cell.proliferate,
+                                      cell.doNothing]
+    
+def test_proliferateAlternatePhiRetrieval():
+    phi = 2 * math.pi * 1
+
+    unitaryGrid = Grid(1, 1, [
+        [(0, 0), 1, 0, False]
     ])
 
     cell = unitaryGrid.spaces[(0, 0)].getOccupant()
@@ -13,10 +26,10 @@ def test_proliferateRetrieval():
                                       cell.doNothing]
 
 def test_apoptosisAndQuiesceRetrieval():
-    phi = 0
+    phi = 2 * math.pi * 0.5
 
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 1, False]
+        [(0, 0), 1, 0, False]
     ])
 
     cell = unitaryGrid.spaces[(0, 0)].getOccupant()
@@ -26,10 +39,10 @@ def test_apoptosisAndQuiesceRetrieval():
                                       cell.doNothing]
 
 def test_retrievalInIntermediateConditions():
-    phi = 0.5
+    phi = 2 * math.pi * 0.25
 
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 1, False]
+        [(0, 0), 1, 0, False]
     ])
 
     cell = unitaryGrid.spaces[(0, 0)].getOccupant()

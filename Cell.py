@@ -1,15 +1,16 @@
 import random
+import math
 from ComplementaryProbabilityFunctions import p_a, p_n, p_q, p_r, probDoNothing
 
 class Cell():
-    def __init__(self, container, colorValue, phi_m, quiescent_):
+    def __init__(self, container, colorValue, t_mVal, quiescent_):
         self.containingSpace = container
         self.color = colorValue
-        self.phiM = phi_m
+        self.t_mFrac = t_mVal
         self.quiescent = quiescent_
 
-        if abs(self.color) > 1 or abs(self.phiM) > 1:
-            raise(ValueError(f"The passed cell parameters are too large: color = {self.color}; phiM = {self.phiM}"))
+        if abs(self.color) > 1 or abs(self.t_mFrac) > 1:
+            raise(ValueError(f"The passed cell parameters are too large: color = {self.color}; t_mFrac = {self.t_mFrac}"))
     
     def getColor(self):
         return self.color
@@ -30,7 +31,7 @@ class Cell():
 
     def proliferate(self, neighboringPlots):
         newlyFilledPlot = random.choice(list(neighboringPlots))
-        newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, self.color, self.phiM, self.quiescent))
+        newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, self.color, self.t_mFrac, self.quiescent))
 
     def quiesce(self):
         self.quiescent = True
@@ -45,8 +46,11 @@ class Cell():
     def doNothing(self):
         pass
 
+    def getFitness(self, phi):
+        return 0.5 * math.cos(phi - self.t_mFrac * 2 * math.pi) + 0.5
+
     def getAction(self, phi):
-        phiDiff = abs(phi - self.phiM)
+        fitness = self.getFitness(phi)
 
         if self.quiescent == False:
             return random.choices(
@@ -54,9 +58,9 @@ class Cell():
                  self.quiesce,
                  self.apoptote,
                  self.doNothing],
-                 [p_r(phiDiff),
-                  p_q(phiDiff),
-                  p_a(phiDiff),
+                 [p_r(fitness),
+                  p_q(fitness),
+                  p_a(fitness),
                   probDoNothing]
             )
         
@@ -64,6 +68,6 @@ class Cell():
             return random.choices(
                 [self.anagenesis,
                  self.doNothing],
-                 [p_n(phiDiff),
-                  1 - p_n(phiDiff)]
+                 [p_n(fitness),
+                  1 - p_n(fitness)]
             )
