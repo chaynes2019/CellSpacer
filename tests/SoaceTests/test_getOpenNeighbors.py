@@ -12,7 +12,7 @@ def test_emptyUnitaryGrid():
 
 def test_filledUnitaryGrid():
     filledUnitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 1, False]
+        [(0, 0), 1, 1, False, 0.5]
     ])
 
     centerSpace = filledUnitaryGrid.spaces[(0, 0)]
@@ -33,7 +33,7 @@ def test_emptyLinearGrid():
     
 def test_centerFilledLinearGrid():
     centerFilledLinearGrid = Grid(9, 1, [
-        [(4, 0), 1, 1, False]
+        [(4, 0), 1, 1, False, 0.5]
     ])
 
     centerSpace = centerFilledLinearGrid.spaces[(4, 0)]
@@ -43,7 +43,7 @@ def test_centerFilledLinearGrid():
     
 def test_leftFilledLinearGrid():
     leftFilledLinearGrid = Grid(9, 1, [
-        [(3, 0), 1, 1, False]
+        [(3, 0), 1, 1, False, 0.5]
     ])
 
     centerSpace = leftFilledLinearGrid.spaces[(4, 0)]
@@ -55,9 +55,9 @@ def test_leftFilledLinearGrid():
 
 def test_surroundedLinearGrid():
     surroundedLinearGrid = Grid(9, 1, [
-        [(3, 0), 1, 1, False],
-        [(4, 0), 1, 1, False],
-        [(5, 0), 1, 1, False]
+        [(3, 0), 1, 1, False, 0.5],
+        [(4, 0), 1, 1, False, 0.5],
+        [(5, 0), 1, 1, False, 0.5]
     ])
 
     centerSpace = surroundedLinearGrid.spaces[(4, 0)]
@@ -66,10 +66,10 @@ def test_surroundedLinearGrid():
 
 def test_checkeredSquareGrid():
     squareGrid = Grid(3, 3, [
-        [(1, 0), 1, 1, False],
-        [(0, 1), 1, 1, False],
-        [(2, 1), 1, 1, False],
-        [(1, 2), 1, 1, False]
+        [(1, 0), 1, 1, False, 0.5],
+        [(0, 1), 1, 1, False, 0.5],
+        [(2, 1), 1, 1, False, 0.5],
+        [(1, 2), 1, 1, False, 0.5]
     ])
 
     centerSpace = squareGrid.spaces[(1, 1)]

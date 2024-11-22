@@ -25,7 +25,7 @@ def visualizeMatrix(colorMatrix):
 
 
 grid = Grid(7, 7, [
-    [(3, 3), 1, 1, False]
+    [(3, 3), 1, 1, False, 0.5]
 ])
 
 '''

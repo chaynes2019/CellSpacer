@@ -3,7 +3,7 @@ import math
 
 def test_getFitnessGoodConditions():
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 0, False]
+        [(0, 0), 1, 0, False, 0.5]
         ])
     
     cellInQuestion = unitaryGrid.spaces[(0, 0)].getOccupant()
@@ -14,7 +14,7 @@ def test_getFitnessGoodConditions():
 
 def test_getFitnessGoodConditionsSecondPeriod():
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 0, False]
+        [(0, 0), 1, 0, False, 0.5]
         ])
     
     cellInQuestion = unitaryGrid.spaces[(0, 0)].getOccupant()
@@ -25,7 +25,7 @@ def test_getFitnessGoodConditionsSecondPeriod():
 
 def test_getFitnessBadConditions():
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 0, False]
+        [(0, 0), 1, 0, False, 0.5]
         ])
     
     cellInQuestion = unitaryGrid.spaces[(0, 0)].getOccupant()
@@ -36,7 +36,7 @@ def test_getFitnessBadConditions():
 
 def test_getFitnessIntermediateConditions():
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 0, False]
+        [(0, 0), 1, 0, False, 0.5]
         ])
     
     cellInQuestion = unitaryGrid.spaces[(0, 0)].getOccupant()

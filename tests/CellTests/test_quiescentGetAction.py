@@ -5,7 +5,7 @@ def test_quiescentBadConditions():
     phi = 2 * math.pi * 0.5
 
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 0, True]
+        [(0, 0), 1, 0, True, 0.5]
     ])
 
     cell = unitaryGrid.spaces[(0, 0)].getOccupant()
@@ -16,7 +16,7 @@ def test_quiescentGoodConditions():
     phi = 2 * math.pi * 0
 
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 0, True]
+        [(0, 0), 1, 0, True, 0.5]
     ])
 
     cell = unitaryGrid.spaces[(0, 0)].getOccupant()
@@ -27,7 +27,7 @@ def test_quiescentIntermediateConditions():
     phi = 2 * math.pi * 0.25
 
     unitaryGrid = Grid(1, 1, [
-        [(0, 0), 1, 0, True]
+        [(0, 0), 1, 0, True, 0.5]
     ])
 
     cell = unitaryGrid.spaces[(0, 0)].getOccupant()

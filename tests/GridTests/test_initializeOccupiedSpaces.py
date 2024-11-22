@@ -2,7 +2,7 @@ from Grid import Grid
 import itertools
 
 def test_filledUnitaryGrid():
-    unitaryGrid = Grid(1, 1, [[(0, 0), 1, 1, False]])
+    unitaryGrid = Grid(1, 1, [[(0, 0), 1, 1, False, 0.5]])
 
     assert len(unitaryGrid.spaces) == 1
     assert unitaryGrid.spaces[(0, 0)].getOccupant() != None
@@ -13,8 +13,8 @@ def test_filledUnitaryGrid():
 
 def test_bookendLinearGrid():
     linearGrid = Grid(10, 1, [
-        [(0, 0), 1, 0.25, False],
-        [(9, 0), 1, 0.6, False]
+        [(0, 0), 1, 0.25, False, 0.5],
+        [(9, 0), 1, 0.6, False, 0.5]
     ])
 
     occupant1 = linearGrid.spaces[(0, 0)].getOccupant()
@@ -25,11 +25,11 @@ def test_bookendLinearGrid():
 
 def test_checkeredSquareGrid():
     squareGrid = Grid(3, 3, [
-        [(0, 0), 1, 1, False],
-        [(2, 0), 1, 0, False],
-        [(1, 1), 1, 0.5, False],
-        [(0, 2), 1, 0.75, False],
-        [(2, 2), 1, 0.3, False]
+        [(0, 0), 1, 1, False, 0.5],
+        [(2, 0), 1, 0, False, 0.5],
+        [(1, 1), 1, 0.5, False, 0.5],
+        [(0, 2), 1, 0.75, False, 0.5],
+        [(2, 2), 1, 0.3, False, 0.5]
     ])
 
     occupant1 = squareGrid.spaces[(0, 0)].getOccupant()

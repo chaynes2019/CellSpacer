@@ -23,16 +23,19 @@ class Cell():
         action = self.getAction(phi)[0]
 
         if action == self.proliferate:
-            action(neighboringSpaces)
+            action(proliferativePossibilities)
         else:
             action()
 
         #print(f"Action chosen is {action}")
             
 
-    def proliferate(self, neighboringPlots):
-        newlyFilledPlot = random.choice(list(neighboringPlots))
-        newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, self.color, self.t_mFrac, self.quiescent))
+    def proliferate(self, openNeighboringPlots):
+        if len(openNeighboringPlots) > 0:
+            newlyFilledPlot = random.choice(list(openNeighboringPlots))
+            newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, self.color, self.t_mFrac, self.quiescent, self.s))
+        else:
+            pass
 
     def quiesce(self):
         self.quiescent = True
@@ -59,7 +62,7 @@ class Cell():
                  self.quiesce,
                  self.apoptote,
                  self.doNothing],
-                 [p_r(fitness),
+                 [p_r(fitness, self.s),
                   p_q(fitness, self.s),
                   p_a(fitness),
                   probDoNothing]
@@ -69,6 +72,6 @@ class Cell():
             return random.choices(
                 [self.anagenesis,
                  self.doNothing],
-                 [p_n(fitness),
-                  1 - p_n(fitness)]
+                 [p_n(fitness, self.s),
+                  1 - p_n(fitness, self.s)]
             )
