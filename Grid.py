@@ -2,6 +2,10 @@ import itertools as iterT
 from Space import Space
 from Cell import Cell
 import math
+import numpy as np
+
+homeostaticRateFactor = 0.1
+stochasticDecreaseRate = 0.1
 
 class Grid():
     def __init__(self, xLength, yLength, initiallyOccupiedSpaces):
@@ -20,14 +24,26 @@ class Grid():
 
         self.refreshCellPopulation()
 
+        self.phiVal = 2 * math.pi
+
     def phi(self, t):
+        '''
         T = 100
 
         return 2 * math.pi * t / T
+        '''
+    
+        
+        stochasticDecrease = np.random.exponential(stochasticDecreaseRate)
+        return max(math.pi, self.phiVal + self.dPhidt(self.phiVal) - stochasticDecrease)
+        
         '''if t >= 250:
             return 0.5 * 2 * math.pi
         else:
             return 0'''
+
+    def dPhidt(self, phi):
+        return homeostaticRateFactor * (2 * math.pi - phi)
 
     def initializeEmptyGrid(self):
         for x, y in iterT.product(range(self.dimensions[0]),
@@ -131,7 +147,7 @@ class Grid():
 
         print(len(self.cells))
 
-        phiVal = self.phi(t)
+        self.phiVal = self.phi(t)
 
         for cell in self.cells:
-            cell.tick(phiVal)
+            cell.tick(self.phiVal)

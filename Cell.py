@@ -2,6 +2,8 @@ import random
 import math
 from ComplementaryProbabilityFunctions import p_a, p_n, p_q, p_r, probDoNothing
 
+mutationProbability = 0.001
+
 class Cell():
     def __init__(self, container, colorValue, t_mVal, quiescent_, sVal):
         self.containingSpace = container
@@ -33,7 +35,22 @@ class Cell():
     def proliferate(self, openNeighboringPlots):
         if len(openNeighboringPlots) > 0:
             newlyFilledPlot = random.choice(list(openNeighboringPlots))
-            newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, self.color, self.t_mFrac, self.quiescent, self.s))
+            
+            mutant = random.choices([True, False], [mutationProbability, 1 - mutationProbability])[0]
+            #print("Mutant Boolean returned: {} with mutation probability: {}".format(mutant, mutationProbability))
+
+            if mutant:
+                if abs(self.color - 0.5) < 0.01:
+                    newColor = 1.0
+                    newSVal = 0.4
+                else:
+                    newColor = 0.5
+                    newSVal = 0.6
+
+                newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, newColor, self.t_mFrac, self.quiescent, newSVal))
+            else:
+                newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, self.color, self.t_mFrac, self.quiescent, self.s))
+
         else:
             pass
 
