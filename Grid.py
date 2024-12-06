@@ -2,10 +2,16 @@ import itertools as iterT
 from Space import Space
 from Cell import Cell
 import math
+import random
 import numpy as np
 
 homeostaticRateFactor = 0.1
 stochasticDecreaseRate = 0.1
+
+randomSeed = 1
+
+random.seed(randomSeed)
+rng = np.random.default_rng(randomSeed)
 
 class Grid():
     def __init__(self, xLength, yLength, initiallyOccupiedSpaces):
@@ -22,21 +28,29 @@ class Grid():
 
         self.cells = set()
 
-        self.refreshCellPopulation()
+        self.getYellowGreenPopSizes()
 
-        self.phiVal = 2 * math.pi
+        self.phiVal = 0
 
     def phi(self, t):
         '''
         T = 100
 
         return 2 * math.pi * t / T
+        #return 0
+        '''
+        #Random Environment
+        '''
+        return random.uniform(0, 2 * math.pi)
         '''
     
-        
+        '''
         stochasticDecrease = np.random.exponential(stochasticDecreaseRate)
         return max(math.pi, self.phiVal + self.dPhidt(self.phiVal) - stochasticDecrease)
-        
+        '''
+        #QuasiBrownian Environment
+        return self.phiVal + rng.normal(0, 0.25)
+
         '''if t >= 250:
             return 0.5 * 2 * math.pi
         else:
@@ -131,6 +145,7 @@ class Grid():
         
         return neighbors
     
+    '''
     def refreshCellPopulation(self):
         self.cells = set()
 
@@ -141,9 +156,44 @@ class Grid():
             cell = self.spaces[(x, y)].getOccupant()
             if cell != None:
                 self.cells.add(cell)
+    '''
+    
+    def getYellowGreenPopSizes(self):
+        self.cells = set()
+
+        yellowProliferators = set()
+        yellowQuiescent = set()
+        greenProliferators = set()
+        greenQuiescent = set()
+
+        xLength = self.dimensions[0]
+        yLength = self.dimensions[1]
+
+        for x, y in iterT.product(range(xLength), range(yLength)):
+            cell = self.spaces[(x, y)].getOccupant()
+            if cell != None:
+                self.cells.add(cell)
+                if cell.color == 1:
+                    if cell.quiescent:
+                        yellowQuiescent.add(cell)
+                    else:
+                        yellowProliferators.add(cell)
+                elif cell.color == 0.5:
+                    if cell.quiescent:
+                        greenQuiescent.add(cell)
+                    else:
+                        greenProliferators.add(cell)
+                else:
+                    raise(ValueError("There is a non-empty cell with illegal color"))
+                
+        return (len(yellowProliferators),
+                len(yellowQuiescent),
+                len(greenProliferators),
+                len(greenQuiescent))
 
     def tick(self, t):
-        self.refreshCellPopulation()
+        #By running the below method, self.cells is refreshed
+        self.getYellowGreenPopSizes()
 
         print(len(self.cells))
 
