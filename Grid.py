@@ -55,10 +55,13 @@ class Grid():
             #QuasiBrownian Environment
             return self.phiVal + rng.normal(0, 0.25)
 
-        '''if t >= 250:
-            return 0.5 * 2 * math.pi
-        else:
-            return 0'''
+        elif self.environment == "demonstration":
+            if t <= 250:
+                return 0
+            elif 250 < t < 500:
+                return 0.5 * 2 * math.pi * ((t - 250) / 250)
+            else:
+                return 0.5 * 2 * math.pi
 
     def dPhidt(self, phi):
         return homeostaticRateFactor * (2 * math.pi - phi)
