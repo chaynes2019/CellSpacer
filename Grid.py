@@ -14,7 +14,7 @@ random.seed(randomSeed)
 rng = np.random.default_rng(randomSeed)
 
 class Grid():
-    def __init__(self, xLength, yLength, initiallyOccupiedSpaces):
+    def __init__(self, xLength, yLength, initiallyOccupiedSpaces, environment_, yellowSValue, greenSValue):
         self.dimensions = (xLength, yLength)
 
         if (xLength < 1 or yLength < 1):
@@ -32,24 +32,28 @@ class Grid():
 
         self.phiVal = 0
 
-    def phi(self, t):
-        '''
-        T = 100
+        self.yellowSVal = yellowSValue
 
-        return 2 * math.pi * t / T
+        self.greenSVal = greenSValue
+
+        self.environment = environment_
+
+    def phi(self, t):
+        if self.environment == "periodic":
+            T = 100
+
+            return 2 * math.pi * t / T
         #return 0
-        '''
-        #Random Environment
-        '''
-        return random.uniform(0, 2 * math.pi)
-        '''
-    
-        '''
-        stochasticDecrease = np.random.exponential(stochasticDecreaseRate)
-        return max(math.pi, self.phiVal + self.dPhidt(self.phiVal) - stochasticDecrease)
-        '''
-        #QuasiBrownian Environment
-        return self.phiVal + rng.normal(0, 0.25)
+        
+        elif self.environment == "random":
+            #Random Environment
+            
+            return random.uniform(0, 2 * math.pi)
+        
+        
+        elif self.environment == "quasibrownian":
+            #QuasiBrownian Environment
+            return self.phiVal + rng.normal(0, 0.25)
 
         '''if t >= 250:
             return 0.5 * 2 * math.pi
@@ -195,9 +199,9 @@ class Grid():
         #By running the below method, self.cells is refreshed
         self.getYellowGreenPopSizes()
 
-        print(len(self.cells))
+        #print(len(self.cells))
 
         self.phiVal = self.phi(t)
 
         for cell in self.cells:
-            cell.tick(self.phiVal)
+            cell.tick(self.phiVal, [self.yellowSVal, self.greenSVal])

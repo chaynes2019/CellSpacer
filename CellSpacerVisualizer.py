@@ -23,12 +23,12 @@ def visualizeMatrix(colorMatrix):
 
     plt.show()
 
-
+'''
 grid = Grid(7, 7, [
     [(3, 3), 1, 0, False, 0.4]
 ])
 
-'''
+
 color_matrix = computeMatrixFromGrid(grid)
 visualizeMatrix(color_matrix)
 

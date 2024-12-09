@@ -4,6 +4,8 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
+mutationProb = 0.001
+
 def dNp(populations, fitness):
     yellowNp = populations[0]
     yellowNq = populations[1]
@@ -11,17 +13,18 @@ def dNp(populations, fitness):
     greenNq = populations[3]
 
     popSum = yellowNp + yellowNq + greenNp + greenNq
+    fracOccupied = popSum / 10201
 
     yellowSVal = 0.2
     greenSVal = 0.4
 
-    yellowProliferatingMultiplier = (1 - popSum / 10201) * p_r(fitness, yellowSVal) - p_a(fitness) - p_q(fitness, yellowSVal)
-    greenProliferatingMultiplier = (1 - popSum / 10201) * p_r(fitness, greenSVal) - p_a(fitness) - p_q(fitness, greenSVal)
+    yellowProliferatingMultiplier = (1 -(fracOccupied ** 1.5)) * (1 - mutationProb) * p_r(fitness, yellowSVal) - p_a(fitness) - p_q(fitness, yellowSVal)
+    greenProliferatingMultiplier = (1 - (fracOccupied ** 1.5)) * (1 - mutationProb) * p_r(fitness, greenSVal) - p_a(fitness) - p_q(fitness, greenSVal)
 
     return np.array([
-        yellowProliferatingMultiplier * yellowNp + p_n(fitness, yellowSVal) * yellowNq,
+        yellowProliferatingMultiplier * yellowNp + p_n(fitness, yellowSVal) * yellowNq + (1 - (fracOccupied ** 1.5)) * mutationProb * p_r(fitness, greenSVal) * greenNp,
         p_q(fitness, yellowSVal) * yellowNp - p_n(fitness, yellowSVal) * yellowNq,
-        greenProliferatingMultiplier * greenNp + p_n(fitness, greenSVal) * greenNq,
+        greenProliferatingMultiplier * greenNp + p_n(fitness, greenSVal) * greenNq + (1 - (fracOccupied ** 1.5)) * mutationProb * p_r(fitness, yellowSVal) * yellowNp,
         p_q(fitness, greenSVal) * greenNp - p_n(fitness, greenSVal) * greenNq
     ])
 

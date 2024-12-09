@@ -18,21 +18,24 @@ class Cell():
     def getColor(self):
         return self.color
 
-    def tick(self, phi):
+    def tick(self, phi, sVals):
         proliferativePossibilities = self.containingSpace.getOpenNeighbors()
         neighboringSpaces = self.containingSpace.getNeighbors()
 
         action = self.getAction(phi)[0]
 
+        yellowSVal = sVals[0]
+        greenSVal = sVals[1]
+
         if action == self.proliferate:
-            action(proliferativePossibilities)
+            action(proliferativePossibilities, yellowSVal, greenSVal)
         else:
             action()
 
         #print(f"Action chosen is {action}")
             
 
-    def proliferate(self, openNeighboringPlots):
+    def proliferate(self, openNeighboringPlots, yellowSVal, greenSVal):
         if len(openNeighboringPlots) > 0:
             newlyFilledPlot = random.choice(list(openNeighboringPlots))
             
@@ -42,10 +45,10 @@ class Cell():
             if mutant:
                 if abs(self.color - 0.5) < 0.01:
                     newColor = 1.0
-                    newSVal = 0.4
+                    newSVal = yellowSVal
                 else:
                     newColor = 0.5
-                    newSVal = 0.6
+                    newSVal = greenSVal
 
                 newlyFilledPlot.setOccupant(Cell(newlyFilledPlot, newColor, self.t_mFrac, self.quiescent, newSVal))
             else:

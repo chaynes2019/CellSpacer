@@ -7,80 +7,93 @@ import itertools
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-xLength = 101
-yLength = 101
+def runABM(numIters, environment, sVals, xLength = 101, yLength = 101, toPlot = False, toAnimate = False, environmentalAnimation = False):
+    xLength = 101
+    yLength = 101
 
-yellowt_m = 0
-greent_m = 0
+    yellowt_m = 0
+    greent_m = 0
 
-yellowSVal = 0.2
-greenSVal = 0.4
+    yellowSVal = sVals[0]
+    greenSVal = sVals[1]
 
-iterations = 1000
+    iterations = numIters
 
-gridHistory = np.zeros((xLength, yLength, iterations))
+    gridHistory = np.zeros((xLength, yLength, iterations))
 
-initialYellowCells = [[(x, y), 1, yellowt_m, False, yellowSVal] for x, y in itertools.product(range(xLength), range(yLength)) if (x, y) != (0, 0) and ((x + y) % 2 == 0)]
+    #initialYellowCells = [[(x, y), 1, yellowt_m, False, yellowSVal] for x, y in itertools.product(range(xLength), range(yLength)) if (x, y) != (0, 0) and ((x + y) % 2 == 0)]
+    initialYellowCells = [[(x, y), 1, yellowt_m, False, yellowSVal] for x, y in itertools.product(range(xLength), range(yLength))]
 
-initialGreenCells = [[(x, y), 0.5, greent_m, False, greenSVal] for x, y in itertools.product(range(xLength), range(yLength)) if (x, y) != (0, 0) and ((x + y) % 2 == 1)]
+    #initialGreenCells = [[(x, y), 0.5, greent_m, False, greenSVal] for x, y in itertools.product(range(xLength), range(yLength)) if (x, y) != (0, 0) and ((x + y) % 2 == 1)]
+    initialGreenCells = []
 
-yellowProliferatorsOverTime = np.zeros(iterations)
-yellowQuiescentOverTime = np.zeros(iterations)
-greenProliferatorsOverTime = np.zeros(iterations)
-greenQuiescentOverTime = np.zeros(iterations)
-environmentValuesOverTime = np.zeros(iterations)
+    yellowProliferatorsOverTime = np.zeros(iterations)
+    yellowQuiescentOverTime = np.zeros(iterations)
+    greenProliferatorsOverTime = np.zeros(iterations)
+    greenQuiescentOverTime = np.zeros(iterations)
+    environmentValuesOverTime = np.zeros(iterations)
 
-grid = Grid(xLength, yLength, initialYellowCells + initialGreenCells)
+    grid = Grid(xLength, yLength, initialYellowCells + initialGreenCells, environment, yellowSVal, greenSVal)
 
-for t in range(iterations):
-    color_matrix = cellVisual.computeMatrixFromGrid(grid)
-    gridHistory[:, :, t] = color_matrix
+    for t in range(iterations):
+        color_matrix = cellVisual.computeMatrixFromGrid(grid)
+        gridHistory[:, :, t] = color_matrix
 
-    yellowProliferatorsOverTime[t], yellowQuiescentOverTime[t], greenProliferatorsOverTime[t], greenQuiescentOverTime[t] = grid.getYellowGreenPopSizes()
+        yellowProliferatorsOverTime[t], yellowQuiescentOverTime[t], greenProliferatorsOverTime[t], greenQuiescentOverTime[t] = grid.getYellowGreenPopSizes()
 
-    environmentValuesOverTime[t] = grid.phiVal
-    grid.tick(t)
+        environmentValuesOverTime[t] = grid.phiVal
+        grid.tick(t)
 
-plt.plot(range(iterations), yellowProliferatorsOverTime, label = "Yellow Proliferators")
-plt.plot(range(iterations), yellowQuiescentOverTime, label = "Yellow Quiescent")
-plt.plot(range(iterations), greenProliferatorsOverTime, label = "Green Proliferators")
-plt.plot(range(iterations), greenQuiescentOverTime, label = "Green Quiescent")
-plt.title("Populations versus Time")
-plt.ylim([0, 10500])
-plt.xlim([0, iterations])
-plt.xlabel("Time (cell cycles)")
-plt.ylabel("Cells")
-plt.legend()
+    if toPlot == True:
+        plt.plot(range(iterations), yellowProliferatorsOverTime, label = "Yellow Proliferators")
+        plt.plot(range(iterations), yellowQuiescentOverTime, label = "Yellow Quiescent")
+        plt.plot(range(iterations), greenProliferatorsOverTime, label = "Green Proliferators")
+        plt.plot(range(iterations), greenQuiescentOverTime, label = "Green Quiescent")
+        plt.title("Populations versus Time")
+        plt.ylim([0, 10500])
+        plt.xlim([0, iterations])
+        plt.xlabel("Time (cell cycles)")
+        plt.ylabel("Cells")
+        plt.legend()
 
-plt.savefig("OutputGIFs/differenceEquationFidelityTests/quasiBrownianEnvironmentSeed1HomogeneousStartPopPlot.png")
+        plt.savefig(f"OutputGIFs/differenceEquationFidelityTests/{environment}EnvironmentSeed1AllYellowStartPopPlotIters{numIters}.png")
 
-'''
-fig, ax = plt.subplots()
+        fig2, ax2 = plt.subplots()
+        ax2.plot(range(iterations), environmentValuesOverTime, label = "Environment")
+        ax2.set_title("Environment over Time")
+        ax2.set_xlabel("Time")
+        ax2.set_ylabel("Environment Value")
+        ax2.legend()
 
-displayMatrix = ax.matshow(gridHistory[:, :, 0])
-ax.set_title(f"(Time = 0, Environment = 0")
+        fig2.savefig(f"OutputGIFs/differenceEquationFidelityTests/{environment}EnvironmentSeed1EnvironmentValuesAllYellowIters{numIters}.png")
+    
+    if environmentalAnimation == True:
+        fig3, ax3 = plt.subplots()
 
-def animate(t):
-    environmentVal = environmentValuesOverTime[t]
-    environmentVal = round(environmentVal, 2)
+        ax3.set_title("Environment over Time")
 
-    displayMatrix.set_array(gridHistory[:, :, t])
-    ax.set_title(f"(Time = {t}, Environment = {environmentVal}")
-    return [displayMatrix]
+        ax3.plot(np.array([math.cos(2 * math.pi * 0.001 * k) for k in range(1000)]),
+                 np.array([math.sin(2 * math.pi * 0.001 * k) for k in range(1000)]),
+                 'k')
 
-anim = animation.FuncAnimation(fig, func = animate, frames = iterations, interval = 30)
+    if toAnimate == True:
+        fig, ax = plt.subplots()
 
-gifWriter = animation.PillowWriter(fps = 30)
-anim.save("OutputGIFs/differenceEquationFidelityTests/quasiBrownianEnvironmentSeed1HomogeneousStart.gif", writer = gifWriter)
-'''
+        displayMatrix = ax.matshow(gridHistory[:, :, 0])
+        ax.set_title(f"(Time = 0, Environment = 0")
 
-fig2, ax2 = plt.subplots()
-ax2.plot(range(iterations), environmentValuesOverTime, label = "Environment")
-ax2.set_title("Environment over Time")
-ax2.set_xlabel("Time")
-ax2.set_ylabel("Environment Value")
-ax2.legend()
+        def animate(t):
+            environmentVal = environmentValuesOverTime[t]
+            environmentVal = round(environmentVal, 2)
 
-fig2.savefig("OutputGIFs/differenceEquationFidelityTests/quasiBrownianEnvironmentSeed1EnvironmentValuesExtremelyLong.png")
+            displayMatrix.set_array(gridHistory[:, :, t])
+            ax.set_title(f"(Time = {t}, Environment = {environmentVal}")
+            return [displayMatrix]
 
-exit()
+        anim = animation.FuncAnimation(fig, func = animate, frames = iterations, interval = 30)
+
+        gifWriter = animation.PillowWriter(fps = 30)
+        anim.save(f"OutputGIFs/differenceEquationFidelityTests/{environment}EnvironmentSeed1AllYellowStart.gif", writer = gifWriter)
+    
+    return (yellowProliferatorsOverTime[-1] + yellowQuiescentOverTime[-1],
+            greenProliferatorsOverTime[-1] + greenQuiescentOverTime[-1])
