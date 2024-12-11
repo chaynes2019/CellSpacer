@@ -56,12 +56,10 @@ class Grid():
             return self.phiVal + rng.normal(0, 0.25)
 
         elif self.environment == "demonstration":
-            if t <= 250:
-                return 0
-            elif 250 < t < 500:
-                return 0.5 * 2 * math.pi * ((t - 250) / 250)
+            if t <= 375:
+                return 0.5 * 2 * math.pi * t / 375
             else:
-                return 0.5 * 2 * math.pi
+                return 0.5 * 2 * math.pi - (0.5 * 2 * math.pi * (t - 375) / 375)
 
     def dPhidt(self, phi):
         return homeostaticRateFactor * (2 * math.pi - phi)

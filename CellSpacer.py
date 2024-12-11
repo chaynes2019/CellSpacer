@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import os
 
-runName = "Stable Coexistence S-Value"
+runName = "ABM Demo"
 
 directoryName = os.path.join("/home/hytendf/Projects/IMOYear1/CellSpacer/OutputGIFs", runName)
 os.mkdir(directoryName)
@@ -60,7 +60,7 @@ def runABM(numIters, environment, sVals, xLength = 101, yLength = 101, toPlot = 
         plt.ylabel("Cells")
         plt.legend()
 
-        plt.savefig(f"{directoryName}/PopPlotIters{numIters}.png")
+        plt.savefig(f"{directoryName}/{runName}PopPlotIters{numIters}.png")
 
         fig2, ax2 = plt.subplots()
         ax2.plot(range(iterations), environmentValuesOverTime, label = "Environment")
@@ -69,7 +69,7 @@ def runABM(numIters, environment, sVals, xLength = 101, yLength = 101, toPlot = 
         ax2.set_ylabel("Environment Value")
         ax2.legend()
 
-        fig2.savefig(f"{directoryName}/EnvironmentValuesOverTimeIters{numIters}.png")
+        fig2.savefig(f"{directoryName}/{runName}EnvironmentValuesOverTimeIters{numIters}.png")
     
     if environmentalAnimation == True:
         fig3, ax3 = plt.subplots()
@@ -92,7 +92,6 @@ def runABM(numIters, environment, sVals, xLength = 101, yLength = 101, toPlot = 
         ax3.annotate("", xy=(1, 0), xytext=(0, 0),
                     arrowprops=dict(arrowstyle="->", color = "red"))
 
-        fig3.savefig("CircleTestPlot.png")
 
         def animateEnvironment(t):
             ax3.clear()
@@ -121,7 +120,7 @@ def runABM(numIters, environment, sVals, xLength = 101, yLength = 101, toPlot = 
 
         environmentValuesAnimation = animation.PillowWriter(fps = 30)
 
-        environmentAnim.save(f"{directoryName}/EnvironmentAnimationIters{iterations}.gif")
+        environmentAnim.save(f"{directoryName}/{runName}EnvironmentAnimationIters{iterations}.gif")
 
     if toAnimate == True:
         fig, ax = plt.subplots()
@@ -140,7 +139,7 @@ def runABM(numIters, environment, sVals, xLength = 101, yLength = 101, toPlot = 
         anim = animation.FuncAnimation(fig, func = animate, frames = iterations, interval = 30)
 
         gifWriter = animation.PillowWriter(fps = 30)
-        anim.save(f"{directoryName}/Iters{iterations}.gif", writer = gifWriter)
+        anim.save(f"{directoryName}/{runName}Iters{iterations}.gif", writer = gifWriter)
     
     return (yellowProliferatorsOverTime[-1] + yellowQuiescentOverTime[-1],
             greenProliferatorsOverTime[-1] + greenQuiescentOverTime[-1])

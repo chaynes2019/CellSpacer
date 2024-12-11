@@ -32,7 +32,7 @@ def getFitness(phi):
         return 0.5 * math.cos(phi) + 0.5
 
 def phi(t, phiPrev, environment, randomNumGen):
-    if environment == "fluctuating":
+    if environment == "periodic":
         T = 100
 
         return 2 * math.pi * t / T
@@ -81,10 +81,10 @@ def runApproximation(initialPopulations, numIterations, environment, randomSeed 
     #plt.plot(range(timeLength), cellPopulationsOverTime[0, :] + cellPopulationsOverTime[1, :] +  cellPopulationsOverTime[2, :] + cellPopulationsOverTime[3, :], label = "Total Population")
 
     if plot == True:
-        plt.plot(range(timeLength), cellPopulationsOverTime[0, :], label = "Yellow Proliferators")
-        plt.plot(range(timeLength), cellPopulationsOverTime[1, :], label = "Yellow Quiescent")
-        plt.plot(range(timeLength), cellPopulationsOverTime[2, :], label = "Green Proliferators")
-        plt.plot(range(timeLength), cellPopulationsOverTime[3, :], label = "Green Quiescent")
+        plt.plot(range(timeLength), cellPopulationsOverTime[0, :] + cellPopulationsOverTime[1, :], 'y', label = "Yellow Cells")
+        #plt.plot(range(timeLength), cellPopulationsOverTime[1, :], label = "Yellow Quiescent")
+        plt.plot(range(timeLength), cellPopulationsOverTime[2, :] + cellPopulationsOverTime[3, :], 'g', label = "Green Cells")
+        #plt.plot(range(timeLength), cellPopulationsOverTime[3, :], label = "Green Quiescent")
 
 
         plt.legend()
@@ -94,7 +94,7 @@ def runApproximation(initialPopulations, numIterations, environment, randomSeed 
         plt.xlim([0, timeLength])
         plt.ylim([0, 10500])
 
-        plt.savefig("OutputGIFs/differenceEquationFidelityTests/differenceEquationQuasiBrownianEnvironmentSeed1.png")
+        plt.savefig("OutputGIFs/differenceEquationOutputs/differenceEquationLongTermConvergencePopPlot.png")
 
         fig, ax = plt.subplots()
         ax.plot(range(timeLength), environmentOverTime, label = "Environment")
@@ -103,7 +103,7 @@ def runApproximation(initialPopulations, numIterations, environment, randomSeed 
         ax.set_ylabel("Environment Value")
         ax.legend()
 
-        fig.savefig("OutputGIFs/differenceEquationFidelityTests/differenceEquationQuasiBrownianEnvironmentSeed1EnvironmentValues.png")
+        fig.savefig("OutputGIFs/differenceEquationOutputs/differenceEquationLongTermConvergenceEnvironmentPlot.png")
 
     return (cellPopulationsOverTime[0, -1] + cellPopulationsOverTime[1, -1],
             cellPopulationsOverTime[2, -1] + cellPopulationsOverTime[3, -1])
